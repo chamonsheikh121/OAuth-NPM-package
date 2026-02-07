@@ -1,0 +1,47 @@
+{
+  "name": "@chamonali/google-auth",
+  "version": "1.0.0",
+  "description": "Easy-to-use Google OAuth authentication package for Node.js applications",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "prepare": "npm run build",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "publish:package": "npm run build && npm publish --access public",
+    "version:patch": "npm version patch",
+    "version:minor": "npm version minor",
+    "version:major": "npm version major"
+  },
+  "keywords": [
+    "google",
+    "oauth",
+    "authentication",
+    "google-auth",
+    "oauth2",
+    "login",
+    "passport"
+  ],
+  "author": "Chamonali",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "google-auth-library": "^9.6.0"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@types/express-session": "^1.18.2",
+    "@types/node": "^20.11.0",
+    "dotenv": "^17.2.4",
+    "express-session": "^1.19.0",
+    "typescript": "^5.3.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/chamonali/google-auth.git"
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ]
+}
