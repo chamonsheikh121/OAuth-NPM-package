@@ -24,7 +24,9 @@ npm login
 
 ### 3️⃣ Publish করুন
 
-**Option A: Automated Script (সহজ)**
+**Important:** যদি আপনার NPM account এ 2FA enabled থাকে, তাহলে OTP code লাগবে!
+
+**Option A: Automated Script (সহজ)** ⭐ Recommended
 
 Windows:
 ```bash
@@ -94,3 +96,23 @@ npm publish          # NPM এ publish করুন
 - [ ] GitHub এ push করেছেন
 
 **🎊 Done! Package published!**
+
+---
+
+## ⚠️ 2FA Error পেলে?
+
+যদি এই error আসে:
+```
+403 Forbidden - Two-factor authentication required
+```
+
+**Solution: OTP সহ publish করুন**
+
+```bash
+# Authenticator app থেকে code নিন, তারপর:
+npm publish --access public --otp=123456
+```
+
+*(123456 এর জায়গায় আপনার real-time 6-digit code দিন)*
+
+**বিস্তারিত guide:** দেখুন [2FA_PUBLISH_GUIDE.md](2FA_PUBLISH_GUIDE.md)

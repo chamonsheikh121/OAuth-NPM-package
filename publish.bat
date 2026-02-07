@@ -69,8 +69,18 @@ if /i not "%confirm%"=="y" (
     exit /b 0
 )
 
+echo.
+echo [INFO] If your account has 2FA enabled, you'll need an OTP code.
+echo [INFO] Open your authenticator app now.
+echo.
+set /p otp="Enter your 2FA code (or press Enter to skip): "
+
 echo Publishing to NPM...
-call npm publish --access public
+if "%otp%"=="" (
+    call npm publish --access public
+) else (
+    call npm publish --access public --otp=%otp%
+)
 if %errorlevel% neq 0 (
     echo [ERROR] Publish failed
     pause

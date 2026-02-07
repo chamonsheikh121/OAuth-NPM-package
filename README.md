@@ -1,13 +1,13 @@
-# @chamonali/google-auth
+# @chamonali121/google-auth
 
-সহজে যেকোনো Node.js প্রজেক্টে Google OAuth Authentication যোগ করুন।
+Easily add Google OAuth Authentication to any Node.js project.
 
 ## ✨ Features
 
-- 🚀 সহজ সেটআপ এবং ব্যবহার
+- 🚀 Easy setup and usage
 - 🔒 Secure OAuth2 Authentication
 - 📦 TypeScript Support
-- 🛡️ Express Middleware অন্তর্ভুক্ত
+- 🛡️ Express Middleware included
 - ⚡ Token Management (Access, Refresh, Revoke)
 - 👤 User Profile Information
 - 🔐 ID Token Verification
@@ -15,30 +15,30 @@
 ## 📦 Installation
 
 ```bash
-npm install @chamonali/google-auth
+npm install @chamonali121/google-auth
 ```
 
-অথবা
+Or with Yarn:
 
 ```bash
-yarn add @chamonali/google-auth
+yarn add @chamonali121/google-auth
 ```
 
 ## 🔧 Setup
 
-### 1. Google Cloud Console এ যান
+### 1. Google Cloud Console Setup
 
-1. [Google Cloud Console](https://console.cloud.google.com/) এ যান
-2. একটি নতুন প্রজেক্ট তৈরি করুন অথবা বিদ্যমান প্রজেক্ট সিলেক্ট করুন
-3. "APIs & Services" > "Credentials" এ যান
-4. "Create Credentials" > "OAuth 2.0 Client ID" ক্লিক করুন
-5. Application type হিসেবে "Web application" সিলেক্ট করুন
-6. Authorized redirect URIs যোগ করুন (যেমন: `http://localhost:3000/auth/google/callback`)
-7. আপনার **Client ID** এবং **Client Secret** সেভ করুন
+1. Go to [Google Cloud Console](https://console.cloud.google.com/)
+2. Create a new project or select an existing one
+3. Navigate to "APIs & Services" > "Credentials"
+4. Click "Create Credentials" > "OAuth 2.0 Client ID"
+5. Select "Web application" as the application type
+6. Add authorized redirect URIs (e.g., `http://localhost:3000/auth/google/callback`)
+7. Save your **Client ID** and **Client Secret**
 
-### 2. Environment Variables সেট করুন
+### 2. Set Environment Variables
 
-`.env` ফাইল তৈরি করুন:
+Create a `.env` file:
 
 ```env
 GOOGLE_CLIENT_ID=your-client-id.apps.googleusercontent.com
@@ -52,37 +52,37 @@ GOOGLE_REDIRECT_URI=http://localhost:3000/auth/google/callback
 
 ```typescript
 import express from 'express';
-import { GoogleAuth } from '@chamonali/google-auth';
+import { GoogleAuth } from '@chamonali121/google-auth';
 
 const app = express();
 
-// Google Auth Initialize করুন
+// Initialize Google Auth
 const googleAuth = new GoogleAuth({
   clientId: process.env.GOOGLE_CLIENT_ID!,
   clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
   redirectUri: process.env.GOOGLE_REDIRECT_URI!,
 });
 
-// Login route - Google এ redirect করবে
+// Login route - redirects to Google
 app.get('/auth/google', (req, res) => {
   const authUrl = googleAuth.getAuthUrl();
   res.redirect(authUrl);
 });
 
-// Callback route - Google থেকে redirect হয়ে আসবে
+// Callback route - Google redirects back here
 app.get('/auth/google/callback', async (req, res) => {
   try {
     const { code } = req.query;
     
-    // Authorization code দিয়ে tokens পান
+    // Get tokens using authorization code
     const tokens = await googleAuth.getTokens(code as string);
     
-    // User profile information পান
+    // Get user profile information
     const userProfile = await googleAuth.getUserProfile(tokens.access_token!);
     
     console.log('User Profile:', userProfile);
     
-    // এখানে আপনার session/JWT logic যোগ করুন
+    // Add your session/JWT logic here
     // req.session.user = userProfile;
     
     res.json({
@@ -96,7 +96,7 @@ app.get('/auth/google/callback', async (req, res) => {
 
 // Protected route example
 app.get('/profile', googleAuth.middleware(), (req, res) => {
-  // req.user এ authenticated user এর তথ্য পাবেন
+  // Access authenticated user info via req.user
   res.json({ user: (req as any).user });
 });
 
@@ -109,7 +109,7 @@ app.listen(3000, () => {
 
 ```javascript
 const express = require('express');
-const { GoogleAuth } = require('@chamonali/google-auth');
+const { GoogleAuth } = require('@chamonali121/google-auth');
 
 const app = express();
 
@@ -158,21 +158,21 @@ const googleAuth = new GoogleAuth({
 ### Methods
 
 #### `getAuthUrl(): string`
-Google OAuth authorization URL generate করে।
+Generates Google OAuth authorization URL.
 
 ```typescript
 const authUrl = googleAuth.getAuthUrl();
 ```
 
 #### `getTokens(code: string): Promise<Tokens>`
-Authorization code থেকে access token এবং refresh token পায়।
+Exchanges authorization code for access and refresh tokens.
 
 ```typescript
 const tokens = await googleAuth.getTokens(authorizationCode);
 ```
 
 #### `getUserProfile(accessToken: string): Promise<UserProfile>`
-User এর profile information পায়।
+Retrieves user profile information.
 
 ```typescript
 const profile = await googleAuth.getUserProfile(accessToken);
@@ -180,28 +180,28 @@ const profile = await googleAuth.getUserProfile(accessToken);
 ```
 
 #### `verifyIdToken(idToken: string): Promise<TokenPayload>`
-ID token verify করে।
+Verifies ID token.
 
 ```typescript
 const payload = await googleAuth.verifyIdToken(idToken);
 ```
 
 #### `refreshAccessToken(refreshToken: string): Promise<Credentials>`
-Refresh token ব্যবহার করে নতুন access token পায়।
+Uses refresh token to get a new access token.
 
 ```typescript
 const newTokens = await googleAuth.refreshAccessToken(refreshToken);
 ```
 
 #### `revokeToken(token: string): Promise<boolean>`
-Token revoke করে (logout)।
+Revokes token (logout).
 
 ```typescript
 await googleAuth.revokeToken(accessToken);
 ```
 
 #### `middleware(): ExpressMiddleware`
-Express route protect করার জন্য middleware।
+Middleware to protect Express routes.
 
 ```typescript
 app.get('/protected', googleAuth.middleware(), (req, res) => {
@@ -211,7 +211,7 @@ app.get('/protected', googleAuth.middleware(), (req, res) => {
 
 ## 🔐 Custom Scopes
 
-যদি অতিরিক্ত permissions প্রয়োজন হয়:
+If you need additional permissions:
 
 ```typescript
 const googleAuth = new GoogleAuth({
@@ -231,7 +231,7 @@ const googleAuth = new GoogleAuth({
 ```typescript
 import express from 'express';
 import session from 'express-session';
-import { GoogleAuth } from '@chamonali/google-auth';
+import { GoogleAuth } from '@chamonali121/google-auth';
 
 const app = express();
 
@@ -256,7 +256,7 @@ app.get('/auth/google/callback', async (req, res) => {
     const tokens = await googleAuth.getTokens(req.query.code as string);
     const user = await googleAuth.getUserProfile(tokens.access_token!);
     
-    // Session এ save করুন
+    // Save to session
     (req.session as any).tokens = tokens;
     (req.session as any).user = user;
     
@@ -281,10 +281,10 @@ app.listen(3000);
 
 ## 🛠️ TypeScript Support
 
-Package টি সম্পূর্ণ TypeScript support সহ আসে:
+This package comes with full TypeScript support:
 
 ```typescript
-import { GoogleAuth, GoogleAuthConfig, UserProfile } from '@chamonali/google-auth';
+import { GoogleAuth, GoogleAuthConfig, UserProfile } from '@chamonali121/google-auth';
 
 const config: GoogleAuthConfig = {
   clientId: 'your-client-id',
@@ -297,11 +297,11 @@ const googleAuth = new GoogleAuth(config);
 
 ## ⚠️ Security Best Practices
 
-1. **Environment Variables**: সবসময় credentials `.env` ফাইলে রাখুন
-2. **HTTPS**: Production এ শুধুমাত্র HTTPS ব্যবহার করুন
-3. **Token Storage**: Secure storage (httpOnly cookies/encrypted session) ব্যবহার করুন
-4. **CSRF Protection**: CSRF protection implement করুন
-5. **Token Expiry**: Access token expire হলে refresh token ব্যবহার করুন
+1. **Environment Variables**: Always store credentials in a `.env` file
+2. **HTTPS**: Use HTTPS only in production
+3. **Token Storage**: Use secure storage (httpOnly cookies/encrypted sessions)
+4. **CSRF Protection**: Implement CSRF protection
+5. **Token Expiry**: Use refresh tokens when access tokens expire
 
 ## 📄 License
 
@@ -309,11 +309,11 @@ MIT
 
 ## 🤝 Contributing
 
-Contributions welcome! দয়া করে PR খুলুন।
+Contributions are welcome! Please open a PR.
 
 ## 📧 Support
 
-কোনো সমস্যা হলে [GitHub Issues](https://github.com/chamonali/google-auth/issues) এ জানান।
+If you encounter any issues, please report them on [GitHub Issues](https://github.com/chamonali/google-auth/issues).
 
 ---
 

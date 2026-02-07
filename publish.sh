@@ -71,8 +71,19 @@ read -p "$(echo -e ${YELLOW}Do you want to publish to NPM? [y/N]: ${NC})" -n 1 -
 echo ""
 
 if [[ $REPLY =~ ^[Yy]$ ]]; then
+    echo ""
+    echo -e "${BLUE}If your account has 2FA enabled, you'll need an OTP code.${NC}"
+    echo -e "${BLUE}Open your authenticator app now.${NC}"
+    echo ""
+    read -p "$(echo -e ${YELLOW}Enter your 2FA code (or press Enter to skip): ${NC})" OTP
+    
     echo -e "${YELLOW}Publishing to NPM...${NC}"
-    npm publish --access public
+    
+    if [ -z "$OTP" ]; then
+        npm publish --access public
+    else
+        npm publish --access public --otp=$OTP
+    fi
     
     if [ $? -eq 0 ]; then
         echo -e "${GREEN}✓ Successfully published!${NC}\n"
