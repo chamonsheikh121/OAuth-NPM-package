@@ -313,7 +313,7 @@ Contributions are welcome! Please open a PR.
 
 ## 📧 Support
 
-If you encounter any issues, please report them on [GitHub Issues](https://github.com/chamonali/google-auth/issues).
+If you encounter any issues, please report them on [GitHub Issues](https://github.com/chamonsheikh121/OAuth-NPM-package/issues).
 
 ---
 
